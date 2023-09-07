@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
             //LOCAL
-            $table->string('name');
+           $table->string('name');
             $table->string('profile_pic')->default('person_1.jpg');
             $table->timestamp('email_verified_at')->nullable();
             //LOCAL Y GOOGLE
@@ -32,13 +32,10 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
-
-            // Agregar columna para la relación
-            $table->unsignedBigInteger('profile_id')->nullable();
-            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade')->onUpdate('cascade');
         });
+
+
+
     }
 
     /**

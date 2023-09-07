@@ -32,7 +32,6 @@ return new class extends Migration {
             $table->string('url_video')->nullable();
 
             $table->timestamps();
-            $table->engine = 'InnoDB';
 
             //Relation
             $table->unsignedBigInteger('profile_id')->nullable();

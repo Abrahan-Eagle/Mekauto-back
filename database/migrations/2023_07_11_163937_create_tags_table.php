@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('slug', 128)-> unique();
 
             $table->timestamps();
-            $table->engine = 'InnoDB';
+
 
             $table->unsignedBigInteger('post_id')->nullable();
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade');

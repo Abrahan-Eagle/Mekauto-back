@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('name')->nullable();
 
             $table->timestamps();
-            $table->engine = 'InnoDB';
 
             //RELACIONES
             $table->unsignedBigInteger('vehicle_types_id')->nullable();

@@ -18,8 +18,6 @@ return new class extends Migration {
             $table->string('name')->nullable();
 
             $table->timestamps();
-            $table->engine = 'InnoDB';
-
             //RELACIONES
             $table->unsignedBigInteger('car_model_id')->nullable();
             $table->foreign('car_model_id')->references('id')->on('car_models')->onDelete('cascade')->onUpdate('cascade');

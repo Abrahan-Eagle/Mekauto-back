@@ -19,8 +19,6 @@ return new class extends Migration {
             $table->bigInteger('years');
 
             $table->timestamps();
-            $table->engine = 'InnoDB';
-
             //RELACIONES
             $table->unsignedBigInteger('mark_id')->nullable();
             $table->foreign('mark_id')->references('id')->on('marks')->onDelete('cascade')->onUpdate('cascade');

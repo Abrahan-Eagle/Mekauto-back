@@ -22,6 +22,7 @@ class User extends Authenticatable
         'familyName',
         'givenName',
         'email',
+        'id',
         'imageUrl',
         'idToken',
         'password',
@@ -53,4 +54,10 @@ class User extends Authenticatable
     public function profile(){
         return $this->hasOne(Profile::class);
     }
+
+    public function cellPhones()
+    {
+        return $this->hasMany(Cell_Phone::class);
+    }
+
 }
