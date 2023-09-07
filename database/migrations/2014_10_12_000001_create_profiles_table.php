@@ -27,9 +27,6 @@ return new class extends Migration
             // Agregar columna para la relación
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            /*$table->unsignedBigInteger('cell_phone_id')->nullable();
-            $table->foreign('cell_phone_id')->references('id')->on('cell_phones')->onDelete('cascade')->onUpdate('cascade');
-            */
 
         });
     }

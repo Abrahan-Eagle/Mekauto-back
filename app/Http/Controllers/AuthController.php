@@ -113,6 +113,10 @@ class AuthController extends Controller
     public function googleUser(Request $request)
     {
         try {
+            $fields = $request->validate([
+                'email' => 'required|string|max:255',
+                'idToken' => 'required|string',
+            ]);
             // Obtener los datos del JSON recibido
             $jsonData = $request->json()->all();
             $email = $jsonData['email'];
@@ -127,16 +131,11 @@ class AuthController extends Controller
                     ->first();
 
                 if ($loginUser) {
-                    return response()->json([
+                    $token = $loginUser->createToken('auth_token')->plainTextToken;
+                     return response()->json([
                         'status' => true,
                         'message' => 'El usuario inició sesión correctamente',
-                        'remember_token' => $loginUser -> remember_token,
-                        /*'data' => [
-                            'fullname' => $loginUser -> name,
-                            'email' => $loginUser -> email,
-                            'imageUrl' => $loginUser -> imageUrl
-                            ]*/
-                       // 'data' => $loginUser
+                        'token' => $token,
                     ], 200);
                 } else {
                     return response()->json([
@@ -145,25 +144,40 @@ class AuthController extends Controller
                     ], 401);
                 }
             } else {
+
+                  $validator = Validator::make($request->all(), [
+                    'familyName' => 'required|string|max:255',
+                    'givenName' => 'required|string|max:255',
+                    'email' => 'required|string|max:255|unique:users,email',
+                    'imageUrl' => 'required|string|max:255',
+                    'idToken' => 'required|string|max:255',
+                ]);
+
+
+                if ($validator->fails()) {
+                    return response()->json($validator->errors());
+                }
                 // Si el usuario no existe, crearlo
-                $remember_token = Str::random(80);
+                //$remember_token = Str::random(80);
                 $fullname = $request->familyName . ' ' . $request->givenName;
 
-                $user = User::create([
+                 $user = User::create([
                     'name' => $fullname,
                     'familyName' => $request->familyName,
                     'givenName' => $request->givenName,
                     'email' => $email,
                     'imageUrl' => $request->imageUrl,
                     'idToken' => $request->idToken,
-                    'remember_token' => $remember_token,
                 ]);
 
-                return response()->json([
+                //crea el token y almacena
+                $token = $user->createToken('auth_token')->plainTextToken;
+
+                 return response()->json([
                     'status' => true,
                     'message' => 'Usuario creado con éxito',
-                    'remember_token' => $user -> remember_token,
-                    //'data' => $user,
+                    'token' => $token,
+                    'token_type' => 'Bearer'
                 ], 200);
             }
         } catch (\Throwable $th) {

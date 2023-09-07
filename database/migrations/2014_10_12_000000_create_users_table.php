@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
             //LOCAL
-           $table->string('name');
+            $table->string('name');
             $table->string('profile_pic')->default('person_1.jpg');
             $table->timestamp('email_verified_at')->nullable();
             //LOCAL Y GOOGLE

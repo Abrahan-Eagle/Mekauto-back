@@ -26,7 +26,6 @@ class User extends Authenticatable
         'imageUrl',
         'idToken',
         'password',
-        'remember_token',
     ];
 
     /**
@@ -37,7 +36,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'AccessToken',
         'idToken',
     ];
 
