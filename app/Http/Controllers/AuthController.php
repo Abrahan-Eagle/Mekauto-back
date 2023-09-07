@@ -13,6 +13,7 @@ use App\Http\Requests\CreateRequest;
 use App\Http\Requests\LoginRequest;
 
 
+
 class AuthController extends Controller
 {
     public function createUser(CreateRequest $request)
@@ -129,7 +130,13 @@ class AuthController extends Controller
                     return response()->json([
                         'status' => true,
                         'message' => 'El usuario inició sesión correctamente',
-                        'remember_token' => $loginUser->remember_token
+                        'remember_token' => $loginUser -> remember_token,
+                        /*'data' => [
+                            'fullname' => $loginUser -> name,
+                            'email' => $loginUser -> email,
+                            'imageUrl' => $loginUser -> imageUrl
+                            ]*/
+                       // 'data' => $loginUser
                     ], 200);
                 } else {
                     return response()->json([
@@ -147,7 +154,7 @@ class AuthController extends Controller
                     'familyName' => $request->familyName,
                     'givenName' => $request->givenName,
                     'email' => $email,
-                    'imageUrl' => $request->picture,
+                    'imageUrl' => $request->imageUrl,
                     'idToken' => $request->idToken,
                     'remember_token' => $remember_token,
                 ]);
@@ -155,7 +162,8 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Usuario creado con éxito',
-                    'remember_token' => $remember_token,
+                    'remember_token' => $user -> remember_token,
+                    //'data' => $user,
                 ], 200);
             }
         } catch (\Throwable $th) {
