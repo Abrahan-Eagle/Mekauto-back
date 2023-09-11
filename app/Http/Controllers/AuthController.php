@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\profile;
+use App\Models\Cell_Phone;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,45 +13,46 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Requests\CreateRequest;
 use App\Http\Requests\LoginRequest;
-
-
+use Symfony\Component\HttpKernel\Profiler\Profile as ProfilerProfile;
 
 class AuthController extends Controller
 {
-    public function createUser(CreateRequest $request)
+    public function createUser(Request $request)
     {
         try {
-            //Validated
-            $user = User::where('email', $request->email)->first();
 
-            if (!$user) {
-                return response()->json([
-                        'status' => false,
-                        'message' => 'El email ya esta registrado'
-                    ], 401);
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|max:255|unique:users',
+                'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+                'password' => 'required|string|min:8'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
             }
-
-
-            if($validateUser->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
-
-            $AccessToken = Str::random(80);
 
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'AccessToken' => $AccessToken,
+                'password' => Hash::make($request->password)
             ]);
+/*
+            $user = profile::create([
+                'name' => $request->name,
+            ]);
+
+            $user = Cell_Phone::create([
+                'name' => $request->name,
+            ]);
+*/
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'status' => true,
                 'message' => 'Usuario creado con éxito',
+                'access_token' => $token,
+                'token_type' => 'Bearer'
             ], 200);
 
         } catch (\Throwable $th) {
@@ -64,10 +67,11 @@ class AuthController extends Controller
     public function loginUser(LoginRequest $request)
     {
          try {
+
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                'email' => 'required|email',
+                'email' => 'required',
                 'password' => 'required'
             ]
             );
@@ -83,17 +87,19 @@ class AuthController extends Controller
             if(!Auth::attempt($request->only(['email', 'password']))) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
+                    'message' => 'El correo electrónico y la contraseña no coinciden con nuestro registro.',
                 ], 401);
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->firstOrFail();
+
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Logged In Successfully',
-                'AccessToken' => $user -> AccessToken,
-                //'token' => $user->createToken("API TOKEN")->plainTextToken
+                'message' => 'El usuario inició sesión correctamente',
+                'access_token' => $token,
+                'token_type' => 'Bearer'
             ], 200);
 
         } catch (\Throwable $th) {
@@ -158,7 +164,6 @@ class AuthController extends Controller
                     return response()->json($validator->errors());
                 }
                 // Si el usuario no existe, crearlo
-                //$remember_token = Str::random(80);
                 $fullname = $request->familyName . ' ' . $request->givenName;
 
                  $user = User::create([
@@ -193,7 +198,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->validate([
-            'token' => 'required'
+            'access_token' => 'required'
         ]);
 
         try {
@@ -202,12 +207,12 @@ class AuthController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'User logged out successfully'
+                'message' => 'El usuario cerró sesión exitosamente'
             ]);
         } catch (Exception $exception) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
+                'message' => 'Lo sentimos, el usuario no puede desconectarse.'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -215,7 +220,7 @@ class AuthController extends Controller
     public function getAuthUser(Request $request)
     {
         $request->validate([
-            'token' => 'required'
+            'access_token' => 'required'
         ]);
 
         $user = Auth::user();
