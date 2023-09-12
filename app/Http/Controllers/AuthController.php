@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use App\Http\Requests\CreateRequest;
-use App\Http\Requests\LoginRequest;
 use Symfony\Component\HttpKernel\Profiler\Profile as ProfilerProfile;
 
 class AuthController extends Controller
@@ -50,9 +48,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Usuario creado con éxito',
-                'access_token' => $token,
-                'token_type' => 'Bearer'
+                'message' => 'Usuario creado con éxito'
             ], 200);
 
         } catch (\Throwable $th) {
@@ -64,19 +60,17 @@ class AuthController extends Controller
 
     }
 
-    public function loginUser(LoginRequest $request)
+    public function loginUser(Request $request)
     {
          try {
 
-            $validateUser = Validator::make(
-                $request->all(),
-                [
-                'email' => 'required',
+            $validateUser = Validator::make($request->all(),
+            [
+                'email' => 'required|email',
                 'password' => 'required'
-            ]
-            );
+            ]);
 
-            if($validateUser->fails()) {
+            if($validateUser->fails()){
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
@@ -98,6 +92,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'El usuario inició sesión correctamente',
+                'data' => $user,
                 'access_token' => $token,
                 'token_type' => 'Bearer'
             ], 200);
@@ -140,6 +135,7 @@ class AuthController extends Controller
                     $token = $loginUser->createToken('auth_token')->plainTextToken;
                      return response()->json([
                         'status' => true,
+                        'data' => $loginUser,
                         'message' => 'El usuario inició sesión correctamente',
                         'token' => $token,
                     ], 200);
