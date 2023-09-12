@@ -26,9 +26,14 @@ class AuthController extends Controller
                 'password' => 'required|string|min:8'
             ]);
 
-            if ($validator->fails()) {
-                return response()->json($validator->errors());
+            if($validator->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validator->errors()
+                ], 401);
             }
+
 
             $user = User::create([
                 'name' => $request->name,
@@ -118,6 +123,7 @@ class AuthController extends Controller
                 'email' => 'required|string|max:255',
                 'idToken' => 'required|string',
             ]);
+
             // Obtener los datos del JSON recibido
             $jsonData = $request->json()->all();
             $email = $jsonData['email'];
