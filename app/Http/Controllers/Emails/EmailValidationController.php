@@ -12,6 +12,8 @@ use App\Mail\EmailValidation;
 class EmailValidationController extends Controller
 {
     public function index(Request $request){
+       // return response()->json($request);
+
 
         $mailData = [
             'fullname' => $request -> fullname,
@@ -28,5 +30,8 @@ class EmailValidationController extends Controller
             'status' => true,
             'message' => 'Usuario creado con éxito'
         ], 200);
+
+
+
     }
 }

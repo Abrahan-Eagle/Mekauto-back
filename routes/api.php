@@ -17,8 +17,7 @@ Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
 Route::get('/email-activation/{token}', [AuthController::class, 'update_Email_Activation']);
 //Articles
 Route::get('/post', [PostsController::class, 'index'])->name('posts.index');
-//EMAILS
-Route::get('/send-email-validation', [EmailValidationController::class, 'index']);
+
 
 
 

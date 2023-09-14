@@ -50,11 +50,20 @@ class AuthController extends Controller
             ]);
 */
             $token = $user->createToken('auth_token')->plainTextToken;
-
+            /*
             return response()->json([
                 'status' => true,
                 'message' => 'Usuario creado con éxito'
             ], 200);
+            */
+
+            return redirect()->route('send-email-validation', [
+                'fullname' => $request->name,
+                'token_email' => $token,
+                'status' => true,
+                'message' => 'Usuario creado con éxito'
+            ]);
+
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -228,6 +237,10 @@ class AuthController extends Controller
         $user = Auth::user();
 
         return response()->json(['user' => $user]);
+    }
+
+    public function update_Email_Activation ($token){
+        return $token;
     }
 
 }

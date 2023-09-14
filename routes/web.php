@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Emails\EmailValidationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+//EMAILS
+Route::get('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation');
+
+
