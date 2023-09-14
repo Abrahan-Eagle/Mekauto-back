@@ -5,6 +5,7 @@ use App\Http\Controllers\Store\NoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Emails\EmailValidationController;
 
 
 
@@ -12,8 +13,14 @@ Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 //GOOGLE
 Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
+//EMAIL ACTIVATION
+Route::get('/email-activation/{token}', [AuthController::class, 'update_Email_Activation']);
 //Articles
 Route::get('/post', [PostsController::class, 'index'])->name('posts.index');
+//EMAILS
+Route::get('/send-email-validation', [EmailValidationController::class, 'index']);
+
+
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
