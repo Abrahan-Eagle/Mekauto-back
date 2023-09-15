@@ -387,7 +387,7 @@ ul.social li{
                             </p>
 
 
-                            <p><a href="http://127.0.0.1:8000/api/email-activation/{{ $mailData['token'] }}" class="myButton">CONFIRMAR CORREO</a></p>
+                            <p><a href="{{ $mailData['url'] }}{{ $mailData['token'] }}" class="myButton">CONFIRMAR CORREO</a></p>
 
 
 

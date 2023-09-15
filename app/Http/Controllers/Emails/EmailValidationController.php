@@ -13,10 +13,22 @@ class EmailValidationController extends Controller
 {
     public function index(Request $request){
        // return response()->json($request);
+
+       if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        // La solicitud se realiza a través de HTTPS
+        $url = "https://mekautos.uniblockweb.com/api/email-activation/";
+        //echo "La solicitud se realiza a través de HTTPS";
+        } else {
+        // La solicitud se realiza a través de HTTP
+        $url = "http://127.0.0.1:8000/api/email-activation/";
+        }
+
+
         $mailData = [
             'status' => true,
             'fullname' => $request -> fullname,
             'urlWeb' => 'https://e-mekautos.com',
+            'url' => $url,
             'token' => $request -> token_email,
         ];
 
