@@ -7,6 +7,7 @@ use App\Models\profile;
 use App\Models\Cell_Phone;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -50,6 +51,9 @@ class AuthController extends Controller
             ]);
 */
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            $user_token = User::find($user->id);
+            $user_token->update(['idToken' => $token]);
             /*
             return response()->json([
                 'status' => true,
@@ -240,7 +244,31 @@ class AuthController extends Controller
     }
 
     public function update_Email_Activation ($token){
-        return $token;
+
+        try {
+
+            $emailActivation = User::where('idToken', $token)->first();
+
+            if ($emailActivation) {
+                $emailActivation->email_verified = true;
+                $emailActivation->email_verified_at = Carbon::now();
+                $emailActivation->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'El usuario verifico email exitosamente'
+                ]);
+            } else {
+                // El token no se encontró en la base de datos
+                return response()->json(['message' => 'Token no encontrado'], 404);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             //LOCAL
             $table->string('name');
             $table->string('profile_pic')->default('person_1.jpg');
+            $table->enum('email_verified', ['true', 'false'])->default('false');
             $table->timestamp('email_verified_at')->nullable();
             //LOCAL Y GOOGLE
             //$table->string('AccessToken')->nullable();

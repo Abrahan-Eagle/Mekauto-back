@@ -13,9 +13,8 @@ class EmailValidationController extends Controller
 {
     public function index(Request $request){
        // return response()->json($request);
-
-
         $mailData = [
+            'status' => true,
             'fullname' => $request -> fullname,
             'urlWeb' => 'https://e-mekautos.com',
             'token' => $request -> token_email,
@@ -30,8 +29,5 @@ class EmailValidationController extends Controller
             'status' => true,
             'message' => 'Usuario creado con éxito'
         ], 200);
-
-
-
     }
 }
