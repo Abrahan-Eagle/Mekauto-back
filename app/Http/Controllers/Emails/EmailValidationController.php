@@ -33,9 +33,9 @@ class EmailValidationController extends Controller
         ];
 
         //$emails = ['auth.mekautos@uniblockweb.com', 'thehackeroffire@gmail.com', 'rennyfurnerimi@gmail.com', 'rennyfurneri@gmail.com' , 'davidostos2@gmail.com'];
-        $emails2 = ['auth.mekautos@uniblockweb.com', 'thehackeroffire@gmail.com'];
+        //$emails2 = ['auth.mekautos@uniblockweb.com', 'thehackeroffire@gmail.com'];
 
-        Mail::to($emails2)->send(new EmailValidation($mailData));
+        Mail::to($request->email)->send(new EmailValidation($mailData));
 
         return response()->json([
             'status' => true,

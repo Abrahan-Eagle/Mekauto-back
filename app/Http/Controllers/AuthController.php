@@ -63,6 +63,7 @@ class AuthController extends Controller
 
             return redirect()->route('send-email-validation', [
                 'fullname' => $request->name,
+                'email' => $request->email,
                 'token_email' => $token,
                 'status' => true,
                 'message' => 'Usuario creado con éxito'
@@ -104,6 +105,18 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)->firstOrFail();
+
+/*            return response()->json([
+                'status' => $user->email_verified
+            ], 200);
+*/
+            if ($user->email_verified == 0) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'El correo electrónico no está verificado. No se puede iniciar sesión.',
+                ], 401);
+            }
+
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
