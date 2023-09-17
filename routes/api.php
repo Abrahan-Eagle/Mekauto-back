@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Store\PostsController;
-use App\Http\Controllers\Store\NoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Emails\EmailValidationController;
-
+use App\Http\Controllers\Emails\RecoverPasswordController;
+use App\Http\Controllers\Store\PostsController;
+use App\Http\Controllers\Store\NoteController;
 
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
@@ -17,6 +17,8 @@ Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
 //Route::post('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation');
 Route::post('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation');
 Route::get('/email-activation/{token}', [AuthController::class, 'update_Email_Activation']);
+Route::get('/email-recover-password', [RecoverPasswordController::class, 'index'])->name('email-recover-password');
+
 //Articles
 Route::get('/post', [PostsController::class, 'index'])->name('posts.index');
 
