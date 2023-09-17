@@ -7,11 +7,14 @@ use App\Models\profile;
 use App\Models\Cell_Phone;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Emails\EmailValidationController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpKernel\Profiler\Profile as ProfilerProfile;
 
 class AuthController extends Controller
@@ -54,12 +57,7 @@ class AuthController extends Controller
 
             $user_token = User::find($user->id);
             $user_token->update(['idToken' => $token]);
-            /*
-            return response()->json([
-                'status' => true,
-                'message' => 'Usuario creado con éxito'
-            ], 200);
-            */
+
 
             return redirect()->route('send-email-validation', [
                 'fullname' => $request->name,
@@ -68,6 +66,8 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'Usuario creado con éxito'
             ]);
+
+
 
 
         } catch (\Throwable $th) {
