@@ -16,6 +16,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpKernel\Profiler\Profile as ProfilerProfile;
+use Mail;
+use App\Mail\EmailValidation;
 
 class AuthController extends Controller
 {
@@ -58,6 +60,7 @@ class AuthController extends Controller
             $user_token = User::find($user->id);
             $user_token->update(['idToken' => $token]);
 
+            /*
             return redirect()->route('send-email-validation.index', [
                 'fullname' => $user_token->name,
                 'email' => $user_token->email,
@@ -66,7 +69,7 @@ class AuthController extends Controller
                 'message' => 'Usuario creado con éxito'
                 ])->with('info', 'Categoria Actualizada con exito');
 
-            /*return redirect()->route('send-email-validation', [
+            return redirect()->route('send-email-validation', [
                 'fullname' => $user_token->name,
                 'email' => $user_token->email,
                 'token_email' => $token,
@@ -74,6 +77,35 @@ class AuthController extends Controller
                 'message' => 'Usuario creado con éxito'
             ]);
 */
+
+
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+     // La solicitud se realiza a través de HTTPS
+     $url = "https://mekautos.uniblockweb.com/api/email-activation/";
+     //echo "La solicitud se realiza a través de HTTPS";
+     } else {
+     // La solicitud se realiza a través de HTTP
+     $url = "http://127.0.0.1:8000/api/email-activation/";
+     }
+
+
+     $mailData = [
+         'status' => true,
+         'fullname' => $user_token->name,
+         'urlWeb' => 'https://e-mekautos.com',
+         'url' => $url,
+         'token' => $token,
+     ];
+
+
+     Mail::to($user_token->email)->send(new EmailValidation($mailData));
+
+     return response()->json([
+         'status' => true,
+         'message' => 'Usuario creado con éxito'
+     ], 200);
+
+
 
 
         } catch (\Throwable $th) {
