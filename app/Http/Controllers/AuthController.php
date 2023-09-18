@@ -58,23 +58,22 @@ class AuthController extends Controller
             $user_token = User::find($user->id);
             $user_token->update(['idToken' => $token]);
 
-/*
-            return redirect()->route('send-email-validation', [
-                'fullname' => $request->name,
-                'email' => $request->email,
+            return redirect()->route('send-email-validation.index', [
+                'fullname' => $user_token->name,
+                'email' => $user_token->email,
+                'token_email' => $token,
+                'status' => true,
+                'message' => 'Usuario creado con éxito'
+                ])->with('info', 'Categoria Actualizada con exito');
+
+            /*return redirect()->route('send-email-validation', [
+                'fullname' => $user_token->name,
+                'email' => $user_token->email,
                 'token_email' => $token,
                 'status' => true,
                 'message' => 'Usuario creado con éxito'
             ]);
 */
-            return redirect()->route('send-email-validation', [
-                'fullname' => $request->input('name'),
-                'email' => $request->input('email'),
-                'token_email' => $token,
-                'status' => true,
-                'message' => 'Usuario creado con éxito'
-            ]);
-
 
 
         } catch (\Throwable $th) {

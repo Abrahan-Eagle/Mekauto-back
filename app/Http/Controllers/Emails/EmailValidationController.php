@@ -11,8 +11,9 @@ use App\Mail\EmailValidation;
 
 class EmailValidationController extends Controller
 {
-    public function index(Request $request){
-       // return response()->json($request);
+    //public function index(Request $request){
+
+    public function index($fullname, $email, $token_email) {
 
        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
         // La solicitud se realiza a través de HTTPS
@@ -26,16 +27,16 @@ class EmailValidationController extends Controller
 
         $mailData = [
             'status' => true,
-            'fullname' => $request -> fullname,
+            'fullname' => $fullname,
             'urlWeb' => 'https://e-mekautos.com',
             'url' => $url,
-            'token' => $request -> token_email,
+            'token' => $token_email,
         ];
 
         //$emails = ['auth.mekautos@uniblockweb.com', 'thehackeroffire@gmail.com', 'rennyfurnerimi@gmail.com', 'rennyfurneri@gmail.com' , 'davidostos2@gmail.com'];
         //$emails2 = ['auth.mekautos@uniblockweb.com', 'thehackeroffire@gmail.com'];
 
-        Mail::to($request->email)->send(new EmailValidation($mailData));
+        Mail::to($email)->send(new EmailValidation($mailData));
 
         return response()->json([
             'status' => true,
