@@ -14,11 +14,6 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 //GOOGLE
 Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
 //EMAIL ACTIVATION
-//Route::post('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation');
-//Route::post('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation.index');
-Route::post('/send-email-validation/{fullname}/{email}/{token_email}/{status}/{message}', [EmailValidationController::class, 'index'])->name('send-email-validation.index');
-
-
 Route::get('/email-activation/{token}', [AuthController::class, 'update_Email_Activation']);
 Route::post('/email-recover-password', [RecoverPasswordController::class, 'index']);
 Route::get('/recover-password-edit/{token}', [RecoverPasswordController::class, 'edit'])->name('recover-password-edit');
