@@ -58,7 +58,7 @@ class AuthController extends Controller
             $user_token = User::find($user->id);
             $user_token->update(['idToken' => $token]);
 
-
+/*
             return redirect()->route('send-email-validation', [
                 'fullname' => $request->name,
                 'email' => $request->email,
@@ -66,7 +66,14 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'Usuario creado con éxito'
             ]);
-
+*/
+            return redirect()->route('send-email-validation', [
+                'fullname' => $request->input('name'),
+                'email' => $request->input('email'),
+                'token_email' => $token,
+                'status' => true,
+                'message' => 'Usuario creado con éxito'
+            ]);
 
 
 
