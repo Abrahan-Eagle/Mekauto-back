@@ -123,7 +123,10 @@ a, a:hover {
 			padding-top: 5px;
 			color: #000000;
 			font-family: sans-serif;" class="subheader">
-      Froylan Camacho
+
+
+ <h1>{{ $mailData['fullname'] }}</h1>
+
 		</td>
 	</tr>
 
@@ -145,11 +148,11 @@ a, a:hover {
 		<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
 			padding-top: 25px;
 			padding-bottom: 5px;" class="button"><a
-			href="https://github.com/konsav/email-templates/" target="_blank" style="text-decoration: underline;">
+			href="{{ $mailData['url'] }}" target="_blank" style="text-decoration: underline;">
 				<table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;"><tr><td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
 					bgcolor="#E9703E"><a target="_blank" style="text-decoration: underline;
 					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
-					href="https://github.com/konsav/email-templates/">
+					href="{{ $mailData['url'] }}">
 						Cambiar contraseña
 					</a>
 			</td></tr></table></a>
@@ -180,7 +183,7 @@ a, a:hover {
 					font-family: sans-serif;" class="paragraph">
 						Si el botón de cambiar contraseña no funciona por favor copia y pega el siguiente
              enlace en tu navegador <span style="font-size:11px;">
-                                                                 http://cloud.kilometroscubicos.com/usuario/password<br>/actualiza/11/50910376877241348769270835577685 </span>
+                {{ $mailData['url'] }}</span>
 
 				</td>
 
@@ -288,10 +291,6 @@ No responda a este mensaje. Este correo electrónico ha sido enviado a través d
 
 <!-- End of SECTION / BACKGROUND -->
 </td></tr></table>
-
-
- <h1>This is test mail from Tutsmake.com {{ $mailData['title'] }}{{ $mailData['url'] }}</h1>
- <p>Laravel 10 send email example</p>
 
 </body>
 </html>

@@ -17,8 +17,9 @@ Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
 //Route::post('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation');
 Route::post('/send-email-validation', [EmailValidationController::class, 'index'])->name('send-email-validation');
 Route::get('/email-activation/{token}', [AuthController::class, 'update_Email_Activation']);
-Route::get('/email-recover-password', [RecoverPasswordController::class, 'index'])->name('email-recover-password');
-
+Route::post('/email-recover-password', [RecoverPasswordController::class, 'index']);
+Route::get('/recover-password-edit/{token}', [RecoverPasswordController::class, 'edit'])->name('recover-password-edit');
+Route::post('/recover-password-update', [RecoverPasswordController::class, 'update']);
 //Articles
 Route::get('/post', [PostsController::class, 'index'])->name('posts.index');
 
